@@ -84,6 +84,38 @@
             </div>
         </section>
 
+        <section id="clasificare" class="classification">
+            <div class="container">
+                <h2 class="section-title">Clasificare Mașini</h2>
+                <p class="section-subtitle">Vezi mașinile noastre clasificate după an și disponibilitate</p>
+                
+                <div class="classification-controls">
+                    <div class="filter-group">
+                        <label for="year-filter">Filtrează după an:</label>
+                        <select id="year-filter" class="filter-select">
+                            <option value="all">Toți anii</option>
+                            <!-- Years will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="availability-filter">Disponibilitate:</label>
+                        <select id="availability-filter" class="filter-select">
+                            <option value="all">Toate</option>
+                            <option value="disponibila">Disponibile</option>
+                            <option value="inchiriata">Închiriate</option>
+                        </select>
+                    </div>
+                    
+                    <button id="reset-filters" class="btn btn-secondary">Resetează filtrele</button>
+                </div>
+                
+                <div id="classification-results" class="classification-results">
+                    <!-- Results will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
         <section id="galerie" class="gallery">
             <div class="container">
                 <h2 class="section-title">Galerie Auto</h2>

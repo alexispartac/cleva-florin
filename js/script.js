@@ -1,3 +1,142 @@
+// Car Classification Functionality
+function initializeCarClassification() {
+    const yearFilter = document.getElementById('year-filter');
+    const availabilityFilter = document.getElementById('availability-filter');
+    const resetButton = document.getElementById('reset-filters');
+    const resultsContainer = document.getElementById('classification-results');
+
+    // Extract unique years and sort them
+    const years = [...new Set(carsData.map(car => car.year))].sort((a, b) => b - a);
+    
+    // Populate year filter
+    years.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearFilter.appendChild(option);
+    });
+
+    // Function to filter cars based on selected filters
+    function filterCars() {
+        const selectedYear = yearFilter.value;
+        const selectedAvailability = availabilityFilter.value;
+
+        const filteredCars = carsData.filter(car => {
+            const yearMatch = selectedYear === 'all' || car.year.toString() === selectedYear;
+            const availabilityMatch = selectedAvailability === 'all' || car.availability === selectedAvailability;
+            return yearMatch && availabilityMatch;
+        });
+
+        displayResults(filteredCars);
+    }
+
+    // Function to display filtered results
+    function displayResults(cars) {
+        resultsContainer.innerHTML = '';
+
+        if (cars.length === 0) {
+            resultsContainer.innerHTML = '<div class="no-results">Nu s-au găsit mașini care să corespundă criteriilor selectate.</div>';
+            return;
+        }
+
+        cars.forEach(car => {
+            const carCard = document.createElement('div');
+            carCard.className = 'car-card';
+            
+            const availabilityClass = car.availability === 'disponibila' ? 'available' : 'rented';
+            const availabilityText = car.availability === 'disponibila' ? 'Disponibilă' : 'Închiriată';
+            
+            carCard.innerHTML = `
+                <img src="${car.image}" alt="${car.model}" class="car-image">
+                <div class="car-details">
+                    <h3>${car.model}</h3>
+                    <div class="car-meta">
+                        <span>An: ${car.year}</span>
+                        <span class="availability ${availabilityClass}">${availabilityText}</span>
+                    </div>
+                </div>
+            `;
+            
+            resultsContainer.appendChild(carCard);
+        });
+    }
+
+    // Event listeners
+    yearFilter.addEventListener('change', filterCars);
+    availabilityFilter.addEventListener('change', filterCars);
+    
+    resetButton.addEventListener('click', () => {
+        yearFilter.value = 'all';
+        availabilityFilter.value = 'all';
+        filterCars();
+    });
+
+    // Initial display of all cars
+    filterCars();
+}
+
+// Initialize car classification when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById('classification-results')) {
+        initializeCarClassification();
+    }
+});
+
+// Car Data and Filtering
+const carsData = [
+    { id: 1, year: 1965, model: 'Ford Mustang', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 2, year: 1957, model: 'Chevrolet Bel Air', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 3, year: 1969, model: 'Dodge Charger', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 4, year: 1967, model: 'Chevrolet Camaro', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 5, year: 1959, model: 'Cadillac Eldorado', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 6, year: 1968, model: 'Plymouth Road Runner', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 7, year: 1964, model: 'Ford Thunderbird', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 8, year: 1966, model: 'Pontiac GTO', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 9, year: 1970, model: 'Chevrolet Chevelle SS', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 10, year: 1963, model: 'Corvette Sting Ray', availability: 'disponibila', image: 'images/p1.jpg' },
+    // Adding more cars to reach 50
+    { id: 11, year: 1962, model: 'Jaguar E-Type', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 12, year: 1955, model: 'Mercedes-Benz 300SL', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 13, year: 1961, model: 'Ferrari 250 GT', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 14, year: 1967, model: 'Shelby GT500', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 15, year: 1956, model: 'Chevrolet Nomad', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 16, year: 1969, model: 'Plymouth Barracuda', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 17, year: 1971, model: 'Dodge Challenger', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 18, year: 1964, model: 'Pontiac Tempest', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 19, year: 1958, model: 'Chevrolet Impala', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 20, year: 1965, model: 'Shelby Cobra', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 21, year: 1970, model: 'Plymouth Hemi Cuda', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 22, year: 1966, model: 'Oldsmobile Toronado', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 23, year: 1963, model: 'Studebaker Avanti', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 24, year: 1957, model: 'BMW 507', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 25, year: 1968, model: 'AMC AMX', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 26, year: 1962, model: 'Lincoln Continental', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 27, year: 1971, model: 'De Tomaso Pantera', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 28, year: 1967, model: 'Toyota 2000GT', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 29, year: 1959, model: 'Austin-Healey 3000', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 30, year: 1964, model: 'Buick Riviera', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 31, year: 1970, model: 'Datsun 240Z', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 32, year: 1965, model: 'Alfa Romeo Giulia', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 33, year: 1956, model: 'Ford Thunderbird', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 34, year: 1969, model: 'Chevrolet Nova SS', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 35, year: 1963, model: 'Jaguar XKE', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 36, year: 1971, model: 'Plymouth Duster', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 37, year: 1967, model: 'Pontiac Firebird', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 38, year: 1958, model: 'Chevrolet Corvette', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 39, year: 1966, model: 'Shelby GT350', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 40, year: 1964, model: 'Ford Galaxie 500', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 41, year: 1970, model: 'Dodge Super Bee', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 42, year: 1965, model: 'Pontiac GTO', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 43, year: 1962, model: 'Chevrolet Corvair', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 44, year: 1968, model: 'Mercury Cougar', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 45, year: 1957, model: 'Fiat 500', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 46, year: 1969, model: 'Chevrolet Chevelle', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 47, year: 1963, model: 'Studebaker Lark', availability: 'disponibila', image: 'images/p2.jpg' },
+    { id: 48, year: 1971, model: 'AMC Javelin', availability: 'inchiriata', image: 'images/p3.jpeg' },
+    { id: 49, year: 1967, model: 'Plymouth GTX', availability: 'disponibila', image: 'images/p1.jpg' },
+    { id: 50, year: 1960, model: 'Volkswagen Beetle', availability: 'disponibila', image: 'images/p2.jpg' }
+];
+
 // Mobile Navigation Toggle
 document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger');

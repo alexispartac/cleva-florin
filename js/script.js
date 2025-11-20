@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Form validation function
 function validateForm(data) {
-    const requiredFields = ['nume', 'email', 'telefon', 'tip-eveniment', 'data'];
+    const requiredFields = ['nume', 'email', 'telefon', 'tip', 'data'];
     const errors = [];
 
     // Check required fields
@@ -219,6 +219,126 @@ function showFormMessage(message, type) {
         }
     }, 5000);
 }
+
+function showFormMessage(message, type) {
+    // Remove existing messages
+    const existingMessage = document.querySelector('.form-message');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+
+    // Create message element
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `form-message form-message-${type}`;
+    messageDiv.innerHTML = message;
+
+    // Style the message
+    messageDiv.style.cssText = `
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+        font-weight: 500;
+        text-align: center;
+        animation: slideIn 0.3s ease;
+    `;
+
+    if (type === 'success') {
+        messageDiv.style.background = '#d4edda';
+        messageDiv.style.color = '#155724';
+        messageDiv.style.border = '1px solid #c3e6cb';
+    } else {
+        messageDiv.style.background = '#f8d7da';
+        messageDiv.style.color = '#721c24';
+        messageDiv.style.border = '1px solid #f5c6cb';
+    }
+
+    // Insert message after form or in the form message container
+    const form = document.getElementById('contact-form');
+    const formMessageContainer = document.getElementById('form-message');
+    
+    if (formMessageContainer) {
+        formMessageContainer.appendChild(messageDiv);
+    } else if (form) {
+        form.parentNode.insertBefore(messageDiv, form.nextSibling);
+    } else {
+        // If neither exists, append to body
+        document.body.appendChild(messageDiv);
+    }
+
+    // Auto-remove message after 5 seconds
+    setTimeout(() => {
+        if (messageDiv.parentNode) {
+            messageDiv.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 300);
+        }
+    }, 5000);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contact-form');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            const submitButton = contactForm.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.innerHTML;
+            submitButton.innerHTML = 'Se trimite...';
+            submitButton.disabled = true;
+            const formMessage = document.getElementById('form-message');
+            
+            // Get form data
+            const formData = {
+                nume: document.getElementById('nume').value,
+                email: document.getElementById('email').value,
+                telefon: document.getElementById('telefon').value,
+                tip: document.getElementById('tip').value,
+                data: document.getElementById('data').value,
+                mesaj: document.getElementById('mesaj').value || 'Nu s-a furnizat niciun mesaj suplimentar.'
+            };
+            
+            // Validate form
+            if (!validateForm(formData)) {
+                submitButton.innerHTML = originalButtonText;
+                submitButton.disabled = false;
+                return;
+            }
+            
+            // Send email using EmailJS
+            emailjs.send('service_dwj90ug', 'template_akn0mzh', {
+                from_name: formData.nume,
+                from_email: formData.email,
+                phone: formData.telefon,
+                event_type: formData.tip,
+                event_date: formData.data,
+                message: formData.mesaj,
+                to_email: 'clevaflorin@gmail.com', // Replace with your email
+                subject: `Cerere nouă de la ${formData.nume}`
+            }, '0YkLVhcwy7EaYZuPW')
+            .then(function() {
+                showFormMessage('Mesajul tău a fost trimis cu succes! Te vom contacta în curând.', 'success');
+                contactForm.reset();
+            }, function(error) {
+                console.error('Eroare la trimiterea mesajului:', error);
+                showFormMessage('A apărut o eroare la trimiterea mesajului. Te rugăm să încerci din nou mai târziu.', 'error');
+            })
+            .finally(() => {
+                submitButton.innerHTML = originalButtonText;
+                submitButton.disabled = false;
+            });
+        });
+    }
+});
+
+// Add EmailJS initialization
+(function() {
+    emailjs.init('0YkLVhcwy7EaYZuPW'); // Replace with your public key
+})();s
 
 // Add CSS animations
 const style = document.createElement('style');

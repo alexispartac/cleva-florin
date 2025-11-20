@@ -193,10 +193,43 @@
                             <a href="tel:+40722123456" class="btn-primary">
                                 <span>📞</span> Sună acum
                             </a>
-                            <a href="mailto:info@vintagecarrentals.ro" class="btn-secondary">
+                            <a href="mailto:clevaflorin@gmail.com" class="btn-secondary">
                                 <span>✉️</span> Trimite email
                             </a>
                         </div>
+                    </div>
+                    <div class="contact-form-container">
+                        <h3>Trimite-ne un mesaj</h3>
+                        <form id="contact-form" class="contact-form">
+                            <div class="form-group">
+                                <input type="text" id="nume" name="nume" placeholder="Numele tău" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="email" name="email" placeholder="Adresa ta de email" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="tel" id="telefon" name="telefon" placeholder="Număr de telefon" required>
+                            </div>
+                            <div class="form-group">
+                                <select id="tip" name="tip" required>
+                                    <option value="" disabled selected>Tip eveniment</option>
+                                    <option value="nunta">Nuntă</option>
+                                    <option value="botez">Botez</option>
+                                    <option value="majorat">Majorat</option>
+                                    <option value="corporate">Eveniment Corporate</option>
+                                    <option value="foto">Ședință Foto</option>
+                                    <option value="altul">Altul</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="date" id="data" name="data" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="mesaj" name="mesaj" rows="4" placeholder="Mesajul tău"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Trimite mesajul</button>
+                            <div id="form-message"></div>
+                        </form>
                     </div>
                     <div class="contact-map">
                         <h3>Vino să ne vizitezi</h3>
@@ -240,5 +273,6 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </body>
 </html>
